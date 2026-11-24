@@ -1550,7 +1550,6 @@ const renderReels = () => {
   </Text>
 </TouchableOpacity>
 
-<
 {profile?.is_admin && (
   <View style={{marginVertical:15,padding:15,borderWidth:1,borderColor:'#2685EA',borderRadius:12}}>
     <Text style={{fontSize:18,fontWeight:'bold',color:'#2685EA'}}>
