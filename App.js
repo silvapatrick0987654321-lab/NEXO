@@ -11,6 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { createClient } from '@supabase/supabase-js';
 import { Video } from 'expo-av';
 import { Audio } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 
 const SUPABASE_URL = 'https://tkovoisqiyjkkfcxgawy.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9sXmI_lv801FwA9q0kLAlg_NwKACO5b';
