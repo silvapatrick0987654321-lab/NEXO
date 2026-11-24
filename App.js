@@ -106,35 +106,41 @@ const [showStoryViewers, setShowStoryViewers] = useState(false);
   const { data, error } = await supabase
     .from('story_views')
     .select('viewer_id')
-    .eq('story_id', selectedStory.id);
+    {selectedStory.user_id === session?.user?.id && (
+  <TouchableOpacity
+    onPress={async () => {
+      const confirmar = window.confirm(
+        'Tem certeza que deseja apagar este Story?'
+      );
 
-  if (error) {
-    console.log('Erro:', error.message);
-    return;
-  }
+      if (!confirmar) return;
 
-  const ids = (data || []).map(v => v.viewer_id);
+      try {
+        const { error } = await supabase
+          .from('stories')
+          .delete()
+          .eq('id', selectedStory.id)
+          .eq('user_id', session.user.id);
 
-  if (ids.length === 0) {
-    setStoryViewsCount(0);
-    setStoryViewers([]);
-    return;
-  }
+        if (error) throw error;
 
-  const { data: profiles, error: profileError } = await supabase
-    .from('profiles')
-    .select('id, username, avatar_url')
-    .in('id', ids);
+        setStories(old =>
+          old.filter(s => s.id !== selectedStory.id)
+        );
 
-  if (profileError) {
-    console.log('Erro nos perfis:', profileError.message);
-    return;
-  }
-
-  setStoryViewers(ids.map(id => ({
-    viewer_id: id,
-    profiles: profiles?.find(p => p.id === id)
-  })));
+        setSelectedStory(null);
+        window.alert('Story apagado com sucesso!');
+      } catch (error) {
+        window.alert('Erro ao apagar Story: ' + error.message);
+      }
+    }}
+    style={{ marginTop: 12, padding: 10 }}
+  >
+    <Text style={{ color: '#ff4444', textAlign: 'center' }}>
+      🗑 Apagar meu Story
+    </Text>
+  </TouchableOpacity>
+)}
 
   setStoryViewsCount(ids.length);
 }
