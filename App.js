@@ -96,7 +96,6 @@ const [sendingStoryReply, setSendingStoryReply] = useState(false);
   const [storyViewers, setStoryViewers] = useState([]);
 const [showStoryViewers, setShowStoryViewers] = useState(false);
   useEffect(() => {
-  useEffect(() => {
   async function loadStoryViews() {
     if (!selectedStory?.id || selectedStory.user_id !== session?.user?.id) {
       setStoryViewsCount(0);
