@@ -96,30 +96,7 @@ const [sendingStoryReply, setSendingStoryReply] = useState(false);
   const [storyViewers, setStoryViewers] = useState([]);
 const [showStoryViewers, setShowStoryViewers] = useState(false);
   useEffect(() => {
-  async function loadStoryViews() {
-  if (!selectedStory?.id || selectedStory.user_id !== session?.user?.id) {
-    setStoryViewsCount(0);
-    setStoryViewers([]);
-    return;
-  }
-
-  const { data, error } = await supabase
-    .from('story_views')
-    .select('viewer_id')
-    {selectedStory.user_id === session?.user?.id && (
-  <TouchableOpacity
-    onPress={async () => {
-      const confirmar = window.confirm(
-        'Tem certeza que deseja apagar este Story?'
-      );
-
-      if (!confirmar) return;
-
-      try {
-        const { error } = await supabase
-          .from('stories')
-          .delete()
-          useEffect(() => {
+  useEffect(() => {
   async function loadStoryViews() {
     if (!selectedStory?.id || selectedStory.user_id !== session?.user?.id) {
       setStoryViewsCount(0);
@@ -133,11 +110,11 @@ const [showStoryViewers, setShowStoryViewers] = useState(false);
       .eq('story_id', selectedStory.id);
 
     if (error) {
-      console.log('Erro:', error.message);
+      console.log('Erro ao carregar visualizações:', error.message);
       return;
     }
 
-    const ids = (data || []).map(v => v.viewer_id);
+    const ids = [...new Set((data || []).map(v => v.viewer_id))];
 
     if (ids.length === 0) {
       setStoryViewsCount(0);
@@ -164,7 +141,7 @@ const [showStoryViewers, setShowStoryViewers] = useState(false);
   }
 
   loadStoryViews();
-}, [selectedStory]);
+}, [selectedStory, session?.user?.id]);
 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
