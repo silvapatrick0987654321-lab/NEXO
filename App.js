@@ -501,45 +501,47 @@ async function loadAdminUsers() {
     })));
   }
 async function deletePost(post) {
-  if (post.user_id !== session.user.id) {
-    return Alert.alert('Atenção', 'Você só pode apagar suas publicações.');
+  if (!session?.user?.id || post.user_id !== session.user.id) {
+    window.alert('Você só pode apagar suas próprias publicações.');
+    return;
   }
 
-  Alert.alert(
-    'Apagar publicação',
-    'Tem certeza que deseja apagar esta publicação?',
-    [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Apagar',
-        style: 'destructive',
-        onPress: async () => {
-          const { error } = await supabase
-            .from('posts')
-            .delete()
-            .eq('id', post.id)
-            .eq('user_id', session.user.id);
+  if (!window.confirm('Tem certeza que deseja apagar esta publicação?')) {
+    return;
+  }
 
-          if (error) {
-            return Alert.alert('Erro', error.message);
-          }
+  try {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', post.id)
+      .eq('user_id', session.user.id);
 
-          const path = post.media_url.split(
-            '/storage/v1/object/public/posts/'
-          )[1]?.split('?')[0];
+    if (error) throw error;
 
-          if (path) {
-            await supabase.storage
-              .from(BUCKET_POSTS)
-              .remove([decodeURIComponent(path)]);
-          }
+    setPosts(old => old.filter(p => p.id !== post.id));
 
-          setPosts(old => old.filter(p => p.id !== post.id));
-          Alert.alert('Pronto', 'Publicação apagada!');
-        }
+    const marker = '/storage/v1/object/public/posts/';
+    const mediaUrl = post.media_url || '';
+    const path = mediaUrl.includes(marker)
+      ? mediaUrl.split(marker)[1].split('?')[0]
+      : null;
+
+    if (path) {
+      const { error: storageError } = await supabase.storage
+        .from(BUCKET_POSTS)
+        .remove([decodeURIComponent(path)]);
+
+      if (storageError) {
+        console.log('Erro ao remover arquivo:', storageError.message);
       }
-    ]
-  );
+    }
+
+    window.alert('Publicação apagada com sucesso!');
+  } catch (error) {
+    console.log('Erro ao apagar publicação:', error.message);
+    window.alert('Não foi possível apagar: ' + error.message);
+  }
 }
   async function publishPost() {
     if (!newMedia?.uri) {
