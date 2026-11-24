@@ -119,33 +119,49 @@ const [showStoryViewers, setShowStoryViewers] = useState(false);
         const { error } = await supabase
           .from('stories')
           .delete()
-          .eq('id', selectedStory.id)
-          .eq('user_id', session.user.id);
+          useEffect(() => {
+  async function loadStoryViews() {
+    if (!selectedStory?.id || selectedStory.user_id !== session?.user?.id) {
+      setStoryViewsCount(0);
+      setStoryViewers([]);
+      return;
+    }
 
-        if (error) throw error;
+    const { data, error } = await supabase
+      .from('story_views')
+      .select('viewer_id')
+      .eq('story_id', selectedStory.id);
 
-        setStories(old =>
-          old.filter(s => s.id !== selectedStory.id)
-        );
+    if (error) {
+      console.log('Erro:', error.message);
+      return;
+    }
 
-        setSelectedStory(null);
-        window.alert('Story apagado com sucesso!');
-      } catch (error) {
-        window.alert('Erro ao apagar Story: ' + error.message);
-      }
-    }}
-    style={{ marginTop: 12, padding: 10 }}
-  >
-    <Text style={{ color: '#ff4444', textAlign: 'center' }}>
-      🗑 Apagar meu Story
-    </Text>
-  </TouchableOpacity>
-)}
+    const ids = (data || []).map(v => v.viewer_id);
 
-  setStoryViewsCount(ids.length);
-}
-    
-  
+    if (ids.length === 0) {
+      setStoryViewsCount(0);
+      setStoryViewers([]);
+      return;
+    }
+
+    const { data: profiles, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, username, avatar_url')
+      .in('id', ids);
+
+    if (profileError) {
+      console.log('Erro nos perfis:', profileError.message);
+      return;
+    }
+
+    setStoryViewers(ids.map(id => ({
+      viewer_id: id,
+      profiles: profiles?.find(p => p.id === id)
+    })));
+
+    setStoryViewsCount(ids.length);
+  }
 
   loadStoryViews();
 }, [selectedStory]);
