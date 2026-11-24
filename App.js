@@ -1896,34 +1896,32 @@ const renderReels = () => {
           <Text style={s.storyUser}>
             @{selectedStory.author?.username}
           </Text>
-          {selectedStory.user_id === session?.user?.id && (
+          {{selectedStory.user_id === session?.user?.id && (
   <TouchableOpacity
-    onPress={() => Alert.alert(
-      'Apagar Story',
-      'Tem certeza que deseja apagar?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Apagar',
-          style: 'destructive',
-          onPress: async () => {
-            const { error } = await supabase
-              .from('stories')
-              .delete()
-              .eq('id', selectedStory.id);
+    onPress={async () => {
+      if (!window.confirm('Tem certeza que deseja apagar este Story?')) {
+        return;
+      }
 
-            if (error) {
-              Alert.alert('Erro', error.message);
-              return;
-            }
+      try {
+        const { error } = await supabase
+          .from('stories')
+          .delete()
+          .eq('id', selectedStory.id)
+          .eq('user_id', session.user.id);
 
-            setStories(old => old.filter(s => s.id !== selectedStory.id));
-            setSelectedStory(null);
-            Alert.alert('Pronto', 'Story apagado!');
-          }
-        }
-      ]
-    )}
+        if (error) throw error;
+
+        setStories(old =>
+          old.filter(story => story.id !== selectedStory.id)
+        );
+
+        setSelectedStory(null);
+        window.alert('Story apagado com sucesso!');
+      } catch (error) {
+        window.alert('Não foi possível apagar o Story: ' + error.message);
+      }
+    }}
     style={{ marginTop: 12, padding: 10 }}
   >
     <Text style={{ color: '#ff4444', textAlign: 'center' }}>
