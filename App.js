@@ -1896,7 +1896,7 @@ const renderReels = () => {
           <Text style={s.storyUser}>
             @{selectedStory.author?.username}
           </Text>
-          {{selectedStory.user_id === session?.user?.id && (
+          {selectedStory.user_id === session?.user?.id && (
   <TouchableOpacity
     onPress={async () => {
       if (!window.confirm('Tem certeza que deseja apagar este Story?')) {
