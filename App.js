@@ -473,7 +473,7 @@ async function loadAdminUsers() {
     if (ids.length) {
       const r = await supabase
         .from('profiles')
-        .select('id,display_name,username,avatar_url')
+        .select('id,display_name,username,avatar_url,is_premium')
         .in('id', ids);
 
       profs = r.data || [];
