@@ -1250,6 +1250,9 @@ async function stopAndSendAudio() {
             <View style={{ flex: 1 }}>
               <Text style={s.bold}>
                 @{post.author?.username || 'usuario'}
+{post.author?.is_premium && (
+  <Text style={{ color: '#1D9BF0', fontWeight: 'bold' }}> ✓</Text>
+)}
               </Text>
               <Text style={s.mutedSmall}>
                 {post.author?.display_name || 'NEXO'}
