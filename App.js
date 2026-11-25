@@ -2099,7 +2099,12 @@ padding: 12, }}
 
       {profileTarget && (
         <View style={s.modalShade}>
-          <View style={s.commentSheet}>
+          <View style={{
+  flex: 1,
+  width: '100%',
+  backgroundColor: '#000',
+  padding: 20
+}}>
             <View style={s.sheetTop}>
               <Text style={s.pageTitle}>Perfil</Text>
               <TouchableOpacity onPress={() => setProfileTarget(null)}>
