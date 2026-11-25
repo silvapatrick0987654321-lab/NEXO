@@ -2192,11 +2192,14 @@ padding: 12, }}
 
     <TouchableOpacity
       style={{ flex: 1, backgroundColor: '#292929', padding: 13, borderRadius: 8, alignItems: 'center' }}
-      onPress={() => openChat({
-        id: profileTarget.id,
-        username: profileTarget.username,
-        avatar_url: profileTarget.avatar_url
-      })}
+      onPress={async () => {
+  await openChat({
+    id: profileTarget.id,
+    username: profileTarget.username,
+    avatar_url: profileTarget.avatar_url
+  });
+  setProfileTarget(null);
+}}
     >
       <Text style={{ color: '#fff', fontWeight: 'bold' }}>Mensagem</Text>
     </TouchableOpacity>
