@@ -2165,11 +2165,17 @@ padding: 12, }}
 
   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 3 }}>
     {profileTarget.posts.map(p => (
-      <Image
-        key={p.id}
-        source={{ uri: p.media_url }}
-        style={{ width: '32%', aspectRatio: 1 }}
-      />
+      <TouchableOpacity
+  key={p.id}
+  onPress={() => {
+    setSelectedPost(p);
+  }}
+>
+  <Image
+    source={{ uri: p.media_url }}
+    style={{ width: '32%', aspectRatio: 1 }}
+  />
+</TouchableOpacity>
     ))}
   </View>
 </View>
