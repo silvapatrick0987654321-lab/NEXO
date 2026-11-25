@@ -1858,13 +1858,34 @@ const renderReels = () => {
 
             <ScrollView style={{ flex: 1 }}>
               {comments.map(c => (
-                <Text key={c.id} style={s.commentLine}>
-                  <Text style={s.bold}>
-                    @{c.author?.username || 'usuario'}{' '}
-                  </Text>
-                  {c.content}
-                </Text>
-              ))}
+  <View
+    key={c.id}
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 6
+    }}
+  >
+    <Text style={[s.commentLine, { flex: 1 }]}>
+      <Text style={s.bold}>
+        @{c.author?.username || 'usuario'}
+      </Text>
+      {' '}
+      {c.content}
+    </Text>
+
+    {(c.user_id === session?.user?.id ||
+      commentsFor.user_id === session?.user?.id) && (
+      <TouchableOpacity
+        onPress={() => deleteComment(c)}
+        style={{ padding: 8 }}
+      >
+        <Text style={{ color: '#d32f2f' }}>Apagar</Text>
+      </TouchableOpacity>
+    )}
+  </View>
+))}
             </ScrollView>
 
             <View style={s.messageComposer}>
