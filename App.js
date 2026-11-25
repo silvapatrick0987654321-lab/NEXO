@@ -1072,18 +1072,30 @@ async function stopAndSendAudio() {
     }
   }
 
-  async function openPublicProfile(person) {
-    const { data: userPosts } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('user_id', person.id)
-      .order('created_at', { ascending: false });
+  
+async function openPublicProfile(person) {
+  const { data: userPosts } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('user_id', person.id)
+    .order('created_at', { ascending: false });
 
-    setProfileTarget({
-      ...person,
-      posts: userPosts || []
-    });
+  const { count: followersCount, error } = await supabase
+    .from('follows')
+    .select('*', { count: 'exact', head: true })
+    .eq('following_id', person.id);
+
+  if (error) {
+    console.log('Erro ao contar seguidores:', error.message);
   }
+
+  setProfileTarget({
+    ...person,
+    posts: userPosts || [],
+    followers_count: followersCount || 0
+  });
+}
+
 
   if (booting) {
     return (
