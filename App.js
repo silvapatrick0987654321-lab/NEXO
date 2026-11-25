@@ -1052,7 +1052,7 @@ async function stopAndSendAudio() {
         if (error) throw error;
 
         if (!data.session) {
-          Alert.alert(
+          window.alert(. 
             'Confirme seu e-mail',
             'Depois da confirmação, entre na sua conta.'
           );
