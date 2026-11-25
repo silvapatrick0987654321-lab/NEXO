@@ -1840,6 +1840,20 @@ const renderReels = () => {
         </ScrollView>
       )
       : renderProfile();
+if (selectedPost) {
+  return (
+    <SafeAreaView style={s.app}>
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => setSelectedPost(null)}>
+          <Text style={{ color: '#111', fontSize: 18 }}>← Voltar</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        {renderFeed()}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
 
   return (
     <SafeAreaView style={s.app}>
