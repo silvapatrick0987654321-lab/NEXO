@@ -1249,7 +1249,10 @@ async function stopAndSendAudio() {
   {avatar(post.author)}
 </TouchableOpacity>
 
-            <View style={{ flex: 1 }}>
+            <TouchableOpacity
+  style={{ flex: 1 }}
+  onPress={() => openPublicProfile(post.author)}
+>>
               <Text style={s.bold}>
                 @{post.author?.username || 'usuario'}
 {post.author?.is_premium && (
