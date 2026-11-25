@@ -2212,7 +2212,7 @@ padding: 12, }}
 >
   <Image
     source={{ uri: p.media_url }}
-    style={{ width: '32%', aspectRatio: 1 }}
+    style={{ width: 110, height: 110 }}
   />
 </TouchableOpacity>
     ))}
