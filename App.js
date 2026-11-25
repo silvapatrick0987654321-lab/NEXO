@@ -1575,7 +1575,11 @@ const renderReels = () => {
         <TouchableOpacity
   onPress={async () => {
   try {
-    const { data, error } = await supabase.functions.invoke('create-checkout');
+    const { data, error } = await supabase.functions.invoke('create-checkout', {
+  headers: {
+    Authorization: `Bearer ${session.access_token}`
+  }
+});
 
     if (error) throw error;
 
