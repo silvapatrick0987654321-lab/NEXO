@@ -1770,7 +1770,31 @@ const renderReels = () => {
     );
 
   const content =
-    tab === 'Início'
+  selectedPost ? (
+    <ScrollView style={{ flex: 1, backgroundColor: '#000' }}>
+      <TouchableOpacity
+        onPress={() => setSelectedPost(null)}
+        style={{ padding: 16 }}
+      >
+        <Text style={{ color: '#fff', fontSize: 18 }}>← Voltar</Text>
+      </TouchableOpacity>
+
+      <Text style={{ color: '#fff', padding: 12 }}>
+        @{selectedPost.author?.username || 'usuário'}
+      </Text>
+
+      <Image
+        source={{ uri: selectedPost.media_url }}
+        style={{ width: '100%', height: 360 }}
+        resizeMode="contain"
+      />
+
+      <Text style={{ color: '#fff', padding: 12 }}>
+        {selectedPost.caption}
+      </Text>
+    </ScrollView>
+  ) :
+  tab === 'Início'
       ? renderFeed()
       : tab === 'Publicar'
       ? renderPublish()
