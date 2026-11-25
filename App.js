@@ -309,7 +309,10 @@ const { count: followersCount } = await supabase
       avatar_url: null
     };
 
-    setProfile(p);
+    setProfile({
+  ...p,
+  followers_count: followersCount || 0
+});
     setEditName(p.display_name || display);
     setEditUsername(p.username || fallbackUsername(display));
     setEditBio(p.bio || '');
