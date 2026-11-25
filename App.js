@@ -1573,10 +1573,21 @@ const renderReels = () => {
         </Text>
 
         <TouchableOpacity
-  onPress={() => Alert.alert(
-    'NEXO PREMIUM 💎',
-    'Tenha acesso a todos os benefícios Premium por apenas R$ 9,90 por mês. Em breve você poderá assinar!'
-  )}
+  onPress={async () => {
+  try {
+    const { data, error } = await supabase.functions.invoke('create-checkout');
+
+    if (error) throw error;
+
+    if (!data?.url) {
+      throw new Error('A Stripe não retornou o link de pagamento.');
+    }
+
+    window.location.href = data.url;
+  } catch (error) {
+    window.alert('Erro ao iniciar o pagamento: ' + error.message);
+  }
+}}
   style={{
     backgroundColor: '#EEF5FF',
     borderWidth: 1.5,
