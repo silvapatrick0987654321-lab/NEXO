@@ -2110,6 +2110,9 @@ padding: 12, }}
               @{profileTarget.username}
             </Text>
             <Text style={s.bio}>{profileTarget.bio}</Text>
+              <Text style={s.muted}>
+  {profileTarget.followers_count || 0} seguidores
+</Text>
 
             <TouchableOpacity
               style={s.primary}
