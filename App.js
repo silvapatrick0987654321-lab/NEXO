@@ -2174,10 +2174,6 @@ padding: 12, }}
   </View>
 </View>
 
-                  source={{ uri: p.media_url }}
-                  style={s.postImage}
-                />
-              ))}
             </ScrollView>
           </View>
         </View>
