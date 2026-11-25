@@ -83,6 +83,7 @@ export default function App() {
   const [editAvatar, setEditAvatar] = useState(null);
   const [editing, setEditing] = useState(false);
   const [profileTarget, setProfileTarget] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const [posts, setPosts] = useState([]);
   const [newMedia, setNewMedia] = useState(null);
