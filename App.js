@@ -665,7 +665,28 @@ async function deletePost(post) {
     setCommentText('');
     openComments(commentsFor);
   }
+async function deleteComment(comment) {
+  const isOwner = comment.user_id === session?.user?.id;
+  const isPostOwner = commentsFor?.user_id === session?.user?.id;
 
+  if (!isOwner && !isPostOwner) return;
+
+  if (!window.confirm('Tem certeza que deseja apagar este comentário?')) {
+    return;
+  }
+
+  const { error } = await supabase
+    .from('post_comments')
+    .delete()
+    .eq('id', comment.id);
+
+  if (error) {
+    window.alert('Erro ao apagar comentário: ' + error.message);
+    return;
+  }
+
+  await openComments(commentsFor);
+}
   async function loadStories() {
     const { data, error } = await supabase
       .from('stories')
