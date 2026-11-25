@@ -292,7 +292,10 @@ const [showStoryViewers, setShowStoryViewers] = useState(false);
       console.log('profile', error.message);
       return;
     }
-
+const { count: followersCount } = await supabase
+  .from('follows')
+  .select('*', { count: 'exact', head: true })
+  .eq('following_id', session.user.id);
     const display =
       session.user.user_metadata?.name ||
       session.user.email?.split('@')[0] ||
