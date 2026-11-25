@@ -1245,7 +1245,9 @@ async function stopAndSendAudio() {
       {posts.map(post => (
         <View key={post.id} style={s.post}>
           <View style={s.postHead}>
-            {avatar(post.author)}
+            <TouchableOpacity onPress={() => openPublicProfile(post.author)}>
+  {avatar(post.author)}
+</TouchableOpacity>
 
             <View style={{ flex: 1 }}>
               <Text style={s.bold}>
