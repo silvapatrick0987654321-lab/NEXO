@@ -2107,38 +2107,73 @@ padding: 12, }}
 }}>
             <View style={s.sheetTop}>
               <Text style={s.pageTitle}>Perfil</Text>
-              <TouchableOpacity onPress={() => setProfileTarget(null)}>
-                <Text style={s.bold}>Fechar</Text>
-              </TouchableOpacity>
-            </View>
+              
+<View style={{ flex: 1, backgroundColor: '#000' }}>
+  <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 18 }}>
+    {avatar(profileTarget, 95)}
 
-            {avatar(profileTarget, 75)}
-            <Text style={s.profileName}>
-              {profileTarget.display_name}
-            </Text>
-            <Text style={s.muted}>
-              @{profileTarget.username}
-            </Text>
-            <Text style={s.bio}>{profileTarget.bio}</Text>
-              <Text style={s.muted}>
-  {profileTarget.followers_count || 0} seguidores
-</Text>
+    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+          {profileTarget.posts?.length || 0}
+        </Text>
+        <Text style={{ color: '#fff' }}>publicações</Text>
+      </View>
 
-            <TouchableOpacity
-              style={s.primary}
-              onPress={() => toggleFollow(profileTarget.id)}
-            >
-              <Text style={s.primaryText}>
-                {following.includes(profileTarget.id)
-                  ? 'DEIXAR DE SEGUIR'
-                  : 'SEGUIR'}
-              </Text>
-            </TouchableOpacity>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+          {profileTarget.followers_count || 0}
+        </Text>
+        <Text style={{ color: '#fff' }}>seguidores</Text>
+      </View>
+    </View>
+  </View>
 
-            <ScrollView>
-              {profileTarget.posts.map(p => (
-                <Image
-                  key={p.id}
+  <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>
+    {profileTarget.display_name}
+  </Text>
+
+  <Text style={{ color: '#aaa', marginTop: 3 }}>
+    @{profileTarget.username}
+  </Text>
+
+  <Text style={{ color: '#fff', marginTop: 10, marginBottom: 18 }}>
+    {profileTarget.bio}
+  </Text>
+
+  <View style={{ flexDirection: 'row', gap: 8, marginBottom: 20 }}>
+    <TouchableOpacity
+      style={{ flex: 1, backgroundColor: '#2685EA', padding: 13, borderRadius: 8, alignItems: 'center' }}
+      onPress={() => toggleFollow(profileTarget.id)}
+    >
+      <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+        {following.includes(profileTarget.id) ? 'DEIXAR DE SEGUIR' : 'SEGUIR'}
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={{ flex: 1, backgroundColor: '#292929', padding: 13, borderRadius: 8, alignItems: 'center' }}
+      onPress={() => openChat({
+        id: profileTarget.id,
+        username: profileTarget.username,
+        avatar_url: profileTarget.avatar_url
+      })}
+    >
+      <Text style={{ color: '#fff', fontWeight: 'bold' }}>Mensagem</Text>
+    </TouchableOpacity>
+  </View>
+
+  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 3 }}>
+    {profileTarget.posts.map(p => (
+      <Image
+        key={p.id}
+        source={{ uri: p.media_url }}
+        style={{ width: '32%', aspectRatio: 1 }}
+      />
+    ))}
+  </View>
+</View>
+
                   source={{ uri: p.media_url }}
                   style={s.postImage}
                 />
