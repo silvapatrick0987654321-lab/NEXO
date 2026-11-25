@@ -1058,10 +1058,9 @@ async function stopAndSendAudio() {
         if (error) throw error;
 
         if (!data.session) {
-          window.alert(. 
-            'Confirme seu e-mail',
-            'Depois da confirmação, entre na sua conta.'
-          );
+          window.alert(
+  'Confirme seu e-mail. Depois da confirmação, entre na sua conta.'
+);
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
