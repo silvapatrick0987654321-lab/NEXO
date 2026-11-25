@@ -1262,7 +1262,7 @@ async function stopAndSendAudio() {
               <Text style={s.mutedSmall}>
                 {post.author?.display_name || 'NEXO'}
               </Text>
-            </View>
+            </TouchableOpacity>
 
             {post.user_id === session.user.id && (
   <TouchableOpacity onPress={() => deletePost(post)}>
